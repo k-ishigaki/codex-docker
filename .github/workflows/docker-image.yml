@@ -17,6 +17,6 @@ jobs:
     steps:
       -
         name: Build and push
-        uses: k-ishigaki/publish-docker-image-action@v1
+        uses: k-ishigaki/publish-docker-image-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
