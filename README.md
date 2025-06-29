@@ -16,7 +16,7 @@ docker build --build-arg CODEX_VERSION=<version> -t codex-docker .
 
 Run the CLI:
 ```bash
-docker run --rm codex-docker --help
+docker run --rm codex-docker codex --help
 ```
 
 ## Build Arguments
