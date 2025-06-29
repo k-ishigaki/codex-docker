@@ -24,4 +24,6 @@ RUN set -eux; \
     curl -fsSL "$CODEX_URL" -o /tmp/codex.tar.gz; \
     tar -xzf /tmp/codex.tar.gz -C /usr/local/bin; \
     mv /usr/local/bin/codex-* /usr/local/bin/codex; \
+    chmod +x /usr/local/bin/codex; \
+    chown root:root /usr/local/bin/codex; \
     rm /tmp/codex.tar.gz
