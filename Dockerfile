@@ -1,21 +1,24 @@
-FROM rust:1.85-slim-bookworm AS builder
+FROM alpine:3.22.0
 
-ENV CARGO_PROFILE_RELEASE_LTO=thin
+RUN apk add --no-cache openssl ca-certificates curl tar
 
-WORKDIR /src
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends pkg-config libssl-dev git && \
-    rm -rf /var/lib/apt/lists/*
-RUN git clone --depth 1 https://github.com/openai/codex.git .
-WORKDIR /src/codex-rs
-RUN cargo build --release --locked
+ARG CODEX_VERSION=codex-rs-6a8a936f75ea44faf05ff4fab0c6a36fc970428d-1-rust-v0.0.2506261603
 
-FROM debian:bookworm-slim
+RUN set -eux; \
+    ARCH=$(uname -m); \
+    OS=$(uname -s | tr '[:upper:]' '[:lower:]'); \
+    case "$ARCH:$OS" in \
+        x86_64:linux) TGT=x86_64-unknown-linux-musl;; \
+        aarch64:linux) TGT=aarch64-unknown-linux-musl;; \
+        x86_64:darwin) TGT=x86_64-apple-darwin;; \
+        aarch64:darwin) TGT=aarch64-apple-darwin;; \
+        *) echo "Unsupported platform: $ARCH-$OS"; exit 1;; \
+    esac; \
+    CODEX_URL="https://github.com/openai/codex/releases/download/${CODEX_VERSION}/codex-${TGT}.tar.gz"; \
+    curl -fsSL "$CODEX_URL" -o /tmp/codex.tar.gz; \
+    tar -xzf /tmp/codex.tar.gz -C /usr/local/bin; \
+    mv /usr/local/bin/codex-* /usr/local/bin/codex; \
+    rm /tmp/codex.tar.gz
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends libssl3 ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder /src/codex-rs/target/release/codex /usr/local/bin/codex
 ENTRYPOINT ["codex"]
 CMD ["--help"]
