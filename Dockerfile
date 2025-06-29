@@ -25,6 +25,3 @@ RUN set -eux; \
     tar -xzf /tmp/codex.tar.gz -C /usr/local/bin; \
     mv /usr/local/bin/codex-* /usr/local/bin/codex; \
     rm /tmp/codex.tar.gz
-
-ENTRYPOINT ["codex"]
-CMD ["--help"]
