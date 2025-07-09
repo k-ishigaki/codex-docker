@@ -8,7 +8,7 @@ COPY --from=ghcr.io/astral-sh/uv:alpine \
     /usr/local/bin/uvx \
     /usr/local/bin/
 
-ARG CODEX_VERSION=codex-rs-6a8a936f75ea44faf05ff4fab0c6a36fc970428d-1-rust-v0.0.2506261603
+ARG CODEX_VERSION=rust-v0.4.0
 
 RUN set -eux; \
     ARCH=$(uname -m); \
