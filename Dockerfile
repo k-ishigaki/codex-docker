@@ -1,6 +1,6 @@
 FROM alpine:3.22.0
 
-RUN apk add --no-cache openssl ca-certificates curl tar nodejs npm python3 uv
+RUN apk add --no-cache openssl ca-certificates curl tar nodejs npm python3 uv ripgrep
 
 ARG CODEX_VERSION=rust-v0.5.0
 
