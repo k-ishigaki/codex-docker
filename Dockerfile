@@ -1,12 +1,6 @@
 FROM alpine:3.22.0
 
-RUN apk add --no-cache openssl ca-certificates curl tar nodejs npm
-
-# Copy uv and uvx binaries for Python-based MCP servers
-COPY --from=ghcr.io/astral-sh/uv:alpine \
-    /usr/local/bin/uv \
-    /usr/local/bin/uvx \
-    /usr/local/bin/
+RUN apk add --no-cache openssl ca-certificates curl tar nodejs npm python3 uv
 
 ARG CODEX_VERSION=rust-v0.4.0
 
